@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nama Internasional Generator</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --dark: #333;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .country-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .country-option {
+            position: relative;
+        }
+        
+        .country-option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .country-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .country-option input:checked + label {
+            border-color: var(--primary);
+            background-color: rgba(74, 107, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        .country-flag {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+            margin-bottom: 30px;
+        }
+        
+        button:hover {
+            background-color: #3a5bef;
+        }
+        
+        .results {
+            display: none;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .country-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .country-name span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .generated-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .pronunciation {
+            color: #666;
+            font-style: italic;
+            margin-top: 3px;
+        }
+        
+        .copy-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #e05555;
+        }
+        
+        .history {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .history h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .history-list {
+            list-style: none;
+        }
+        
+        .history-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .country-selector {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nama Internasional Generator</h1>
+        <p class="description">Ubah namamu menjadi versi Rusia, China, Jepang, dan Korea!</p>
+        
+        <div class="input-group">
+            <label for="name-input">Masukkan Nama Aslimu:</label>
+            <input type="text" id="name-input" placeholder="Contoh: Andi, Siti, Budi">
+        </div>
+        
+        <div class="country-selector">
+            <div class="country-option">
+                <input type="checkbox" id="russia" checked>
+                <label for="russia">
+                    <div class="country-flag">🇷🇺</div>
+                    Rusia
+                </label>
+            </div>
+            <div class="country-option">
+                <input type="checkbox" id="china" checked>
+                <label for="china">
+                    <div class="country-flag">🇨🇳</div>
+                    China
+                </label>
+            </div>
+            <div class="country-option">
+                <input type="checkbox" id="japan" checked>
+                <label for="japan">
+                    <div class="country-flag">🇯🇵</div>
+                    Jepang
+                </label>
+            </div>
+            <div class="country-option">
+                <input type="checkbox" id="korea" checked>
+                <label for="korea">
+                    <div class="country-flag">🇰🇷</div>
+                    Korea
+                </label>
+            </div>
+        </div>
+        
+        <button id="generate-btn">Generate Nama</button>
+        
+        <div class="results" id="results">
+            <h2>Hasil Nama Internasional</h2>
+            <div id="results-container"></div>
+        </div>
+        
+        <div class="history">
+            <h3>Riwayat Generasi</h3>
+            <ul class="history-list" id="history-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Database nama dalam berbagai bahasa (150 nama per negara)
+        const nameDatabase = {
+            // Rusia (75 male + 75 female)
+            russia: {
+                male: {
+                    first: [
+                        "Ivan", "Dmitri", "Sergei", "Alexei", "Mikhail", "Nikolai", "Andrei", "Vladimir", "Yuri", "Pavel",
+                        "Alexander", "Viktor", "Oleg", "Igor", "Boris", "Konstantin", "Leonid", "Stanislav", "Valery", "Gennady",
+                        "Arkady", "Vadim", "Vyacheslav", "Yevgeny", "Anatoly", "Timur", "Ruslan", "Denis", "Anton", "Fyodor",
+                        "Grigory", "Kirill", "Maxim", "Roman", "Artem", "Semyon", "Vasily", "Yaroslav", "Zakhar", "Eduard",
+                        "Matvey", "Nikita", "Stepan", "Taras", "Filipp", "Kuzma", "Lev", "Miron", "Naum", "Orest",
+                        "Pyotr", "Rodion", "Savva", "Tikhon", "Ustin", "Frol", "Khariton", "Yakov", "Zinoviy", "Innokenty",
+                        "Lavrenty", "Makar", "Nestor", "Osip", "Prokhor", "Rostislav", "Svyatoslav", "Trofim", "Feodor", "Kasyan"
+                    ],
+                    last: [
+                        "Ivanov", "Smirnov", "Kuznetsov", "Popov", "Vasiliev", "Petrov", "Sokolov", "Mikhailov", "Fedorov", "Morozov",
+                        "Volkov", "Alexeev", "Lebedev", "Semenov", "Egorov", "Pavlov", "Kozlov", "Stepanov", "Nikolaev", "Orlov",
+                        "Andreev", "Makarov", "Nikitin", "Zakharov", "Zaitsev", "Karpov", "Solovyov", "Borisov", "Yakovlev", "Grigoriev",
+                        "Romanov", "Vorobyov", "Sergeev", "Kuzmin", "Frolov", "Alexandrov", "Dmitriev", "Korolev", "Gusev", "Titov",
+                        "Kuzin", "Kudryavtsev", "Belyaev", "Dorofeev", "Efimov", "Fedotov", "Filatov", "Chernov", "Abramov", "Avdeev",
+                        "Agafonov", "Aksenov", "Andrianov", "Anisimov", "Antonov", "Artyomov", "Afanasyev", "Babushkin", "Barinov", "Belov",
+                        "Bespalov", "Blinov", "Bobrov", "Bogdanov", "Bolshakov", "Bondarenko", "Bragin", "Bykov", "Vasnetsov", "Vinogradov",
+                        "Vlasov", "Volodin", "Gavrilov", "Golubev", "Goncharov", "Gorbachev", "Gromov", "Davydov", "Danilov", "Dementiev"
+                    ]
+                },
+                female: {
+                    first: [
+                        "Anna", "Maria", "Elena", "Olga", "Tatiana", "Natalia", "Irina", "Svetlana", "Yulia", "Ekaterina",
+                        "Anastasia", "Darya", "Polina", "Vera", "Ludmila", "Galina", "Valentina", "Lyubov", "Nadezhda", "Zoya",
+                        "Ksenia", "Margarita", "Raisa", "Tamara", "Evgenia", "Viktoria", "Sofia", "Alina", "Marina", "Larisa",
+                        "Lyudmila", "Inna", "Alla", "Varvara", "Zinaida", "Valeria", "Veronika", "Diana", "Karina", "Kristina",
+                        "Lilia", "Lubov", "Maya", "Nina", "Oksana", "Rimma", "Snezhana", "Taisiya", "Ulyana", "Faina",
+                        "Yana", "Zhanna", "Albina", "Bella", "Vasilisa", "Gala", "Dina", "Zoya", "Inessa", "Klara",
+                        "Lada", "Marta", "Nika", "Olesya", "Raisa", "Svetlana", "Toma", "Feodora", "Yaroslava", "Zlata",
+                        "Agata", "Bogdana", "Vlada", "Greta", "Darina", "Zara", "Ivanna", "Kira", "Lana", "Milana"
+                    ],
+                    last: [
+                        "Ivanova", "Smirnova", "Kuznetsova", "Popova", "Vasilieva", "Petrova", "Sokolova", "Mikhailova", "Fedorova", "Morozova",
+                        "Volkova", "Alexeeva", "Lebedeva", "Semenova", "Egorova", "Pavlova", "Kozlova", "Stepanova", "Nikolaeva", "Orlova",
+                        "Andreeva", "Makarova", "Nikitina", "Zakharova", "Zaitseva", "Karpova", "Solovyova", "Borisova", "Yakovleva", "Grigorieva",
+                        "Romanova", "Vorobyova", "Sergeeva", "Kuzmina", "Frolova", "Alexandrova", "Dmitrieva", "Koroleva", "Guseva", "Titova",
+                        "Kuzina", "Kudryavtseva", "Belyaeva", "Dorofeeva", "Efimova", "Fedotova", "Filatova", "Chernova", "Abramova", "Avdeeva",
+                        "Agafonova", "Aksenova", "Andrianova", "Anisimova", "Antonova", "Artyomova", "Afanasyeva", "Babushkina", "Barinova", "Belova",
+                        "Bespalova", "Blinova", "Bobrova", "Bogdanova", "Bolshakova", "Bondarenko", "Bragina", "Bykova", "Vasnetsova", "Vinogradova",
+                        "Vlasova", "Volodina", "Gavrilova", "Golubeva", "Goncharova", "Gorbacheva", "Gromova", "Davydova", "Danilova", "Dementieva"
+                    ]
+                }
+            },
+            
+            // China (75 male + 75 female)
+            china: {
+                male: {
+                    first: [
+                        "Wei", "Ming", "Jie", "Lei", "Tao", "Feng", "Jian", "Bin", "Hao", "Yang",
+                        "Xin", "Yong", "Qiang", "Jun", "Bo", "Dong", "Guang", "Hong", "Kang", "Long",
+                        "Peng", "Qing", "Rui", "Sheng", "Tian", "Wei", "Xiang", "Yan", "Zhi", "An",
+                        "Bao", "Chang", "Da", "En", "Fu", "Gang", "Hai", "Jing", "Kai", "Li",
+                        "Min", "Ning", "Qi", "Ren", "Shan", "Ting", "Wen", "Xiao", "Yi", "Zheng",
+                        "Ao", "Bai", "Chen", "Ding", "Er", "Fei", "Ge", "Heng", "Ji", "Ke",
+                        "Liang", "Mao", "Nian", "Ou", "Ping", "Quan", "Shi", "Tang", "Wang", "Xing",
+                        "Ying", "Zhu", "Ai", "Bing", "Chao", "Dan", "Fan", "Gen", "Hua", "Jia"
+                    ],
+                    last: [
+                        "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Zhao", "Huang", "Zhou", "Wu",
+                        "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "Lin", "He", "Gao", "Luo",
+                        "Zheng", "Liang", "Xie", "Song", "Tang", "Han", "Feng", "Deng", "Cao", "Peng",
+                        "Pan", "Jiang", "Yu", "Yuan", "Xiao", "Cui", "Lu", "Qiao", "Yin", "Zeng",
+                        "Fan", "Dong", "Liao", "Tian", "Ye", "Jin", "Zhong", "Meng", "Qin", "Yan",
+                        "Qian", "Du", "Wei", "Jia", "Bao", "Hou", "Lei", "Kong", "Jiang", "Bai",
+                        "Mao", "Gong", "Shi", "Shen", "Jin", "Wan", "Duan", "Jiang", "Wu", "Lai",
+                        "Chang", "Wen", "Guan", "Kang", "Jing", "Qi", "Yue", "Xiang", "Ruan", "Min"
+                    ]
+                },
+                female: {
+                    first: [
+                        "Mei", "Ling", "Xia", "Yan", "Li", "Hui", "Fang", "Ying", "Juan", "Na",
+                        "Qing", "Rong", "Xiu", "Yu", "Lan", "Ping", "Xue", "Yun", "Zhen", "Ai",
+                        "Bing", "Chun", "Dan", "E", "Fen", "Guo", "Hong", "Jia", "Kai", "Lian",
+                        "Min", "Ning", "Qi", "Rui", "Shu", "Ting", "Wen", "Xin", "Yan", "Zhi",
+                        "An", "Bao", "Cai", "Dai", "Fei", "Ge", "Hua", "Jie", "Ke", "Lin",
+                        "Meng", "Nian", "Ou", "Pei", "Qian", "Rou", "Shan", "Tao", "Wei", "Xiang",
+                        "Yao", "Zhu", "Ailan", "Biyu", "Chunhua", "Dandan", "Fangfang", "Guihua", "Huiling", "Jingjing",
+                        "Lili", "Meihui", "Nini", "Qiuyue", "Ruirui", "Shanshan", "Tiantian", "Weiwei", "Xiaoxiao", "Yanyan"
+                    ],
+                    last: [
+                        "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Zhao", "Huang", "Zhou", "Wu",
+                        "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "Lin", "He", "Gao", "Luo",
+                        "Zheng", "Liang", "Xie", "Song", "Tang", "Han", "Feng", "Deng", "Cao", "Peng",
+                        "Pan", "Jiang", "Yu", "Yuan", "Xiao", "Cui", "Lu", "Qiao", "Yin", "Zeng",
+                        "Fan", "Dong", "Liao", "Tian", "Ye", "Jin", "Zhong", "Meng", "Qin", "Yan",
+                        "Qian", "Du", "Wei", "Jia", "Bao", "Hou", "Lei", "Kong", "Jiang", "Bai",
+                        "Mao", "Gong", "Shi", "Shen", "Jin", "Wan", "Duan", "Jiang", "Wu", "Lai",
+                        "Chang", "Wen", "Guan", "Kang", "Jing", "Qi", "Yue", "Xiang", "Ruan", "Min"
+                    ]
+                }
+            },
+            
+            // Jepang (75 male + 75 female)
+            japan: {
+                male: {
+                    first: [
+                        "Haruto", "Riku", "Yuto", "Sota", "Ren", "Sosuke", "Kaito", "Hinata", "Daiki", "Ryota",
+                        "Yuki", "Shota", "Hayato", "Kazuki", "Sora", "Ryo", "Kota", "Tsubasa", "Shun", "Yuma",
+                        "Takumi", "Keita", "Rui", "Yusei", "Shoma", "Kosei", "Taiga", "Kai", "Rei", "Sho",
+                        "Tatsuya", "Naoki", "Koki", "Hiroto", "Rikuto", "Yudai", "Masato", "Kenta", "Jun", "Kohei",
+                        "Takeru", "Shingo", "Tomoya", "Yuya", "Kenji", "Makoto", "Takuya", "Issei", "Itsuki", "Minato",
+                        "Haru", "Asahi", "Hikaru", "Kazuma", "Ryosuke", "Shinji", "Toshiro", "Yamato", "Akira", "Daichi",
+                        "Eiji", "Fumiya", "Goro", "Hideki", "Iori", "Jin", "Kazuhiro", "Leo", "Mamoru", "Noboru",
+                        "Osamu", "Ryu", "Satoshi", "Taro", "Wataru", "Yoshio", "Zen"
+                    ],
+                    last: [
+                        "Sato", "Suzuki", "Takahashi", "Tanaka", "Watanabe", "Ito", "Yamamoto", "Nakamura", "Kobayashi", "Yoshida",
+                        "Yamada", "Sasaki", "Yamaguchi", "Matsumoto", "Inoue", "Kimura", "Hayashi", "Shimizu", "Yamazaki", "Mori",
+                        "Abe", "Ikeda", "Hashimoto", "Ishikawa", "Yamashita", "Ogawa", "Ishii", "Hasegawa", "Kondo", "Ishida",
+                        "Ueda", "Endo", "Aoki", "Fujita", "Ota", "Okada", "Goto", "Kato", "Maeda", "Fujii",
+                        "Okamoto", "Matsuda", "Nakagawa", "Nakano", "Harada", "Ono", "Tamura", "Takeuchi", "Kaneko", "Wada",
+                        "Nakayama", "Ishihara", "Ueno", "Koike", "Kudo", "Sakamoto", "Arai", "Fukuda", "Oshima", "Miyazaki",
+                        "Murakami", "Hara", "Taguchi", "Nishimura", "Kojima", "Sakurai", "Nishida", "Oikawa", "Kikuchi", "Masuda",
+                        "Takada", "Fujiwara", "Miyamoto", "Nomura", "Hirano", "Sugiyama", "Narita", "Takano", "Naito", "Shinohara"
+                    ]
+                },
+                female: {
+                    first: [
+                        "Himari", "Mei", "Yui", "Rin", "Sakura", "Aoi", "Koharu", "Hina", "Mio", "Ichika",
+                        "Akari", "Riko", "Yua", "Sana", "Mana", "Momo", "Nozomi", "Yuna", "Haruka", "Nanami",
+                        "Ayaka", "Miyu", "Honoka", "Rina", "Kanna", "Suzu", "Rio", "Miku", "Nana", "Kotone",
+                        "Shiori", "Hiyori", "Yuzuki", "Saki", "Mizuki", "Airi", "Ema", "Karin", "Rena", "Sumire",
+                        "Yurina", "Natsuki", "Mao", "Asuka", "Sara", "Yume", "Reina", "Ami", "Marika", "Miyako",
+                        "Chihiro", "Fuka", "Hana", "Kaede", "Mai", "Nao", "Rika", "Shizuka", "Tomomi", "Yuki",
+                        "Aya", "Chinatsu", "Emi", "Haru", "Kayo", "Maki", "Natsumi", "Rie", "Sayuri", "Yoko",
+                        "Arisa", "Eri", "Hanako", "Kaori", "Mina", "Noriko", "Sachiko", "Takako", "Yoshiko", "Yumi"
+                    ],
+                    last: [
+                        "Sato", "Suzuki", "Takahashi", "Tanaka", "Watanabe", "Ito", "Yamamoto", "Nakamura", "Kobayashi", "Yoshida",
+                        "Yamada", "Sasaki", "Yamaguchi", "Matsumoto", "Inoue", "Kimura", "Hayashi", "Shimizu", "Yamazaki", "Mori",
+                        "Abe", "Ikeda", "Hashimoto", "Ishikawa", "Yamashita", "Ogawa", "Ishii", "Hasegawa", "Kondo", "Ishida",
+                        "Ueda", "Endo", "Aoki", "Fujita", "Ota", "Okada", "Goto", "Kato", "Maeda", "Fujii",
+                        "Okamoto", "Matsuda", "Nakagawa", "Nakano", "Harada", "Ono", "Tamura", "Takeuchi", "Kaneko", "Wada",
+                        "Nakayama", "Ishihara", "Ueno", "Koike", "Kudo", "Sakamoto", "Arai", "Fukuda", "Oshima", "Miyazaki",
+                        "Murakami", "Hara", "Taguchi", "Nishimura", "Kojima", "Sakurai", "Nishida", "Oikawa", "Kikuchi", "Masuda",
+                        "Takada", "Fujiwara", "Miyamoto", "Nomura", "Hirano", "Sugiyama", "Narita", "Takano", "Naito", "Shinohara"
+                    ]
+                }
+            },
+            
+            // Korea (75 male + 75 female)
+            korea: {
+                male: {
+                    first: [
+                        "Min-jun", "Seo-jun", "Ji-ho", "Do-yun", "Eun-woo", "Si-woo", "Ji-hoon", "Hyun-woo", "Jun-seo", "Ye-jun",
+                        "Seung-ho", "Tae-hyun", "Joon-ho", "Sang-hoon", "Hyun-jun", "Dong-hyun", "Kyung-ho", "Young-jae", "Sung-min", "Jae-hyun",
+                        "Min-ho", "Ji-hun", "Hoon", "Jin-woo", "Seok-ho", "Tae-woo", "Yoon-ho", "Chan-ho", "Ki-hoon", "Sung-hoon",
+                        "Jae-min", "Jin-ho", "Kwang-ho", "Min-ki", "Seung-woo", "Tae-hyung", "Yong-ho", "Chang-ho", "Dae-ho", "Hae-jun",
+                        "Jin-hyuk", "Kang-min", "Min-soo", "Seung-hyun", "Tae-yang", "Yong-jun", "Chul-ho", "Dong-jun", "Hoon-jae", "Jin-woo",
+                        "Ki-bum", "Min-hyuk", "Seo-yoon", "Tae-joon", "Young-ho", "Chul-soo", "Dong-min", "Hyuk", "Jin-sung", "Ki-hyun",
+                        "Min-sung", "Seok-min", "Tae-young", "Young-jun", "Chul-woo", "Dong-wook", "Hyun-jin", "Jin-young", "Ki-joon", "Min-woo",
+                        "Seok-jin", "Tae-jun", "Young-min", "Chul-min", "Dong-hwa", "Hyun-ki", "Jin-kyung", "Ki-seok", "Min-kyu", "Seok-woo"
+                    ],
+                    last: [
+                        "Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Cho", "Yoon", "Jang", "Lim",
+                        "Han", "Shin", "Song", "Yu", "Kwon", "Oh", "Hwang", "Ahn", "Moon", "Yang",
+                        "Baek", "Cha", "Do", "Go", "Ha", "Im", "Jeon", "Ko", "Nam", "Paik",
+                        "Ryu", "Seo", "Son", "Woo", "Yeo", "Bang", "Chae", "Doh", "Gang", "Hong",
+                        "Joo", "Kang", "Ma", "No", "Park", "Roh", "Seok", "Tak", "Uhm", "Yoo",
+                        "Bae", "Chun", "Dang", "Gook", "Hahn", "Jang", "Koo", "Min", "Oh", "Pyo",
+                        "Sa", "Sim", "Suh", "Won", "Youn", "Bong", "Chung", "Dok", "Gwan", "Hahm",
+                        "Jee", "Kuk", "Mok", "Noh", "Pae", "Rhee", "Sohn", "Tae", "Um", "Yun"
+                    ]
+                },
+                female: {
+                    first: [
+                        "Ji-ah", "Seo-yeon", "Ji-yoo", "Ha-eun", "Seo-yun", "Ji-woo", "Eun-ji", "Ye-eun", "Ji-min", "Soo-ah",
+                        "Min-ji", "Hye-jin", "Yu-na", "Da-bin", "Seo-hyun", "Ji-hye", "Eun-ha", "Yeon-woo", "Ji-soo", "Soo-min",
+                        "Hae-won", "Ji-eun", "Kyung-min", "Na-yeon", "Seo-jin", "Ji-young", "Eun-bi", "Ye-seul", "Ji-won", "Soo-ji",
+                        "Hyo-jin", "Ji-sun", "Kyung-hee", "Na-ri", "Seo-yoon", "Ji-yeon", "Eun-kyung", "Ye-sol", "Ji-yoon", "Soo-kyung",
+                        "In-ah", "Ji-hyun", "Kyung-ah", "Na-young", "Seo-ah", "Ji-young", "Eun-mi", "Ye-won", "Ji-yul", "Soo-yeon",
+                        "Jae-eun", "Ji-yul", "Kyung-sook", "Na-kyung", "Seo-hee", "Ji-yeon", "Eun-seo", "Ye-rim", "Ji-yoo", "Soo-jin",
+                        "Joo-hyun", "Ji-young", "Kyung-won", "Na-mi", "Seo-ri", "Ji-yeon", "Eun-sol", "Ye-sun", "Ji-yeon", "Soo-mi",
+                        "Joo-ri", "Ji-yeon", "Kyung-mi", "Na-rae", "Seo-yul", "Ji-yeon", "Eun-young", "Ye-jin", "Ji-yeon", "Soo-young"
+                    ],
+                    last: [
+                        "Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Cho", "Yoon", "Jang", "Lim",
+                        "Han", "Shin", "Song", "Yu", "Kwon", "Oh", "Hwang", "Ahn", "Moon", "Yang",
+                        "Baek", "Cha", "Do", "Go", "Ha", "Im", "Jeon", "Ko", "Nam", "Paik",
+                        "Ryu", "Seo", "Son", "Woo", "Yeo", "Bang", "Chae", "Doh", "Gang", "Hong",
+                        "Joo", "Kang", "Ma", "No", "Park", "Roh", "Seok", "Tak", "Uhm", "Yoo",
+                        "Bae", "Chun", "Dang", "Gook", "Hahn", "Jang", "Koo", "Min", "Oh", "Pyo",
+                        "Sa", "Sim", "Suh", "Won", "Youn", "Bong", "Chung", "Dok", "Gwan", "Hahm",
+                        "Jee", "Kuk", "Mok", "Noh", "Pae", "Rhee", "Sohn", "Tae", "Um", "Yun"
+                    ]
+                }
+            }
+        };
+
+        // Fungsi untuk menentukan gender berdasarkan nama (sederhana)
+        function detectGender(name) {
+            // Daftar nama Indonesia yang umum untuk perempuan
+            const femaleNames = ["siti", "sri", "rini", "dewi", "ani", "yuli", "diah", "lina", "nur", "maya", "dina", "ria"];
+            
+            // Jika nama mengandung substring yang umum untuk perempuan
+            for (const femaleName of femaleNames) {
+                if (name.toLowerCase().includes(femaleName)) {
+                    return "female";
+                }
+            }
+            
+            // Default ke male (karena banyak nama bisa unisex)
+            return "male";
+        }
+
+        // Fungsi untuk menghasilkan nama acak dari database
+        function generateInternationalName(originalName, country) {
+            const gender = detectGender(originalName);
+            const countryData = nameDatabase[country];
+            
+            if (!countryData) return null;
+            
+            const firstName = countryData[gender].first[Math.floor(Math.random() * countryData[gender].first.length)];
+            const lastName = countryData[gender].last[Math.floor(Math.random() * countryData[gender].last.length)];
+            
+            // Khusus China dan Jepang, formatnya nama belakang dulu
+            if (country === "china" || country === "japan") {
+                return `${lastName} ${firstName}`;
+            }
+            
+            // Untuk Rusia dan Korea, formatnya nama depan dulu
+            return `${firstName} ${lastName}`;
+        }
+
+        // Fungsi untuk membuat hasil pronunciation (hanya untuk efek)
+        function createPronunciation(name, country) {
+            const vowels = "aeiou";
+            let pronunciation = "";
+            
+            // Buat pronunciation acak (ini hanya untuk efek visual)
+            for (let i = 0; i < name.length; i++) {
+                const char = name[i].toLowerCase();
+                if (vowels.includes(char)) {
+                    pronunciation += char + (Math.random() > 0.5 ? "h" : "") + (Math.random() > 0.7 ? char : "");
+                } else {
+                    pronunciation += char;
+                }
+            }
+            
+            // Tambahkan akhiran berdasarkan negara
+            switch (country) {
+                case "japan":
+                    return pronunciation.replace(/[^aeiou]/g, "").toUpperCase() + "-san";
+                case "korea":
+                    return pronunciation.slice(0, 3).toUpperCase() + "-ssi";
+                case "china":
+                    return "Xi " + pronunciation.toUpperCase();
+                case "russia":
+                    return pronunciation.toUpperCase().split("").join("-");
+                default:
+                    return pronunciation;
+            }
+        }
+
+        // Fungsi untuk menampilkan hasil
+        function displayResults(originalName, selectedCountries) {
+            const resultsContainer = document.getElementById("results-container");
+            resultsContainer.innerHTML = "";
+            
+            selectedCountries.forEach(country => {
+                const internationalName = generateInternationalName(originalName, country);
+                const pronunciation = createPronunciation(internationalName, country);
+                
+                const countryNames = {
+                    "russia": "Rusia",
+                    "china": "China",
+                    "japan": "Jepang",
+                    "korea": "Korea"
+                };
+                
+                const countryFlags = {
+                    "russia": "🇷🇺",
+                    "china": "🇨🇳",
+                    "japan": "🇯🇵",
+                    "korea": "🇰🇷"
+                };
+                
+                const resultItem = document.createElement("div");
+                resultItem.className = "result-item";
+                resultItem.innerHTML = `
+                    <div class="country-name">
+                        <span>${countryFlags[country]}</span>
+                        ${countryNames[country]}
+                    </div>
+                    <div class="generated-name">${internationalName}</div>
+                    <div class="pronunciation">Pengucapan: ${pronunciation}</div>
+                    <button class="copy-btn" data-name="${internationalName}">Salin Nama</button>
+                `;
+                
+                resultsContainer.appendChild(resultItem);
+            });
+            
+            // Tampilkan section hasil
+            document.getElementById("results").style.display = "block";
+            
+            // Tambahkan ke riwayat
+            addToHistory(originalName);
+        }
+
+        // Fungsi untuk menambahkan ke riwayat
+        function addToHistory(originalName) {
+            const historyList = document.getElementById("history-list");
+            const historyItem = document.createElement("li");
+            historyItem.className = "history-item";
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            historyItem.innerHTML = `
+                <span>${originalName}</span>
+                <small>${timeString}</small>
+            `;
+            
+            // Tambahkan di paling atas
+            if (historyList.firstChild) {
+                historyList.insertBefore(historyItem, historyList.firstChild);
+            } else {
+                historyList.appendChild(historyItem);
+            }
+            
+            // Batasi hanya 5 item riwayat
+            if (historyList.children.length > 5) {
+                historyList.removeChild(historyList.lastChild);
+            }
+        }
+
+        // Event listener untuk tombol generate
+        document.getElementById("generate-btn").addEventListener("click", function() {
+            const originalName = document.getElementById("name-input").value.trim();
+            
+            if (!originalName) {
+                alert("Silakan masukkan nama terlebih dahulu!");
+                return;
+            }
+            
+            // Dapatkan negara yang dipilih
+            const selectedCountries = [];
+            if (document.getElementById("russia").checked) selectedCountries.push("russia");
+            if (document.getElementById("china").checked) selectedCountries.push("china");
+            if (document.getElementById("japan").checked) selectedCountries.push("japan");
+            if (document.getElementById("korea").checked) selectedCountries.push("korea");
+            
+            if (selectedCountries.length === 0) {
+                alert("Silakan pilih setidaknya satu negara!");
+                return;
+            }
+            
+            displayResults(originalName, selectedCountries);
+        });
+
+        // Event delegation untuk tombol salin
+        document.addEventListener("click", function(e) {
+            if (e.target.classList.contains("copy-btn")) {
+                const nameToCopy = e.target.getAttribute("data-name");
+                navigator.clipboard.writeText(nameToCopy).then(() => {
+                    e.target.textContent = "Tersalin!";
+                    setTimeout(() => {
+                        e.target.textContent = "Salin Nama";
+                    }, 2000);
+                });
+            }
+        });
+
+        // Animasi saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("name-input").focus();
+        });
+    </script>
+</body>
+</html>
