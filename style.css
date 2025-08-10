@@ -178,10 +178,32 @@ h1 {
 }
 
 /* --- Gender & Country Selectors --- */
+.selection-area h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--c-white-t80);
+    margin-bottom: 0.75rem;
+    text-align: left;
+}
+
+.options-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+
+.gender-selection {
+    flex: 1 1 40%; /* Let gender take a bit less space */
+}
+.country-selection {
+    flex: 1 1 60%; /* Let country take a bit more */
+}
+
 .gender-selector, .country-selector {
     display: grid;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 0.75rem; /* Slightly smaller gap */
+    /* margin-bottom is now on .options-container */
 }
 
 .gender-selector { grid-template-columns: 1fr 1fr; }
@@ -347,12 +369,9 @@ h1 {
         margin-bottom: 1rem;
     }
 
-    .gender-selector, .country-selector {
-        grid-template-columns: 1fr;
-    }
-
-    .country-selector {
-        grid-template-columns: 1fr; /* 1 column on mobile for countries */
+    .options-container {
+        flex-direction: column;
+        gap: 1.5rem;
     }
 
     #generate-btn {

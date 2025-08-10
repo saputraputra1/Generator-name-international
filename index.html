@@ -34,36 +34,42 @@
         </section>
 
         <section class="selection-area">
-            <!-- Step 1: Gender Selection -->
-            <div class="gender-selector">
-                <label class="gender-option male active">
-                    <input type="radio" name="gender" value="male" checked>
-                    <i class="fas fa-mars"></i> Laki-laki
-                </label>
-                <label class="gender-option female">
-                    <input type="radio" name="gender" value="female">
-                    <i class="fas fa-venus"></i> Perempuan
-                </label>
-            </div>
+            <div class="options-container">
+                <div class="gender-selection">
+                    <h4>Pilih Jenis Kelamin</h4>
+                    <div class="gender-selector">
+                        <label class="gender-option male active">
+                            <input type="radio" name="gender" value="male" checked>
+                            <i class="fas fa-mars"></i> Laki-laki
+                        </label>
+                        <label class="gender-option female">
+                            <input type="radio" name="gender" value="female">
+                            <i class="fas fa-venus"></i> Perempuan
+                        </label>
+                    </div>
+                </div>
 
-            <!-- Step 2: Country Selection -->
-            <div class="country-selector">
-                <label class="country-option">
-                    <input type="radio" name="country" value="russia" checked>
-                    <span>🇷🇺 Russia</span>
-                </label>
-                <label class="country-option">
-                    <input type="radio" name="country" value="china">
-                    <span>🇨🇳 China</span>
-                </label>
-                <label class="country-option">
-                    <input type="radio" name="country" value="japan">
-                    <span>🇯🇵 Japan</span>
-                </label>
-                <label class="country-option">
-                    <input type="radio" name="country" value="korea">
-                    <span>🇰🇷 Korea</span>
-                </label>
+                <div class="country-selection">
+                    <h4>Pilih Negara</h4>
+                    <div class="country-selector">
+                        <label class="country-option">
+                            <input type="radio" name="country" value="russia" checked>
+                            <span>🇷🇺 Russia</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="china">
+                            <span>🇨🇳 China</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="japan">
+                            <span>🇯🇵 Japan</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="korea">
+                            <span>🇰🇷 Korea</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <button id="generate-btn">
