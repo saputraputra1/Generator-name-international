@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const latinNameEl = document.getElementById('latin-name');
     const nativeScriptEl = document.getElementById('native-script');
     const copyBtn = document.getElementById('copy-btn');
+    const voiceBtn = document.getElementById('voice-btn');
     const copyNotification = document.getElementById('copy-notification');
 
     // --- EVENT LISTENERS ---
@@ -71,6 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Voice button click
+    voiceBtn.addEventListener('click', () => {
+        const textToSpeak = latinNameEl.textContent;
+        if (textToSpeak) {
+            const country = document.querySelector('input[name="country"]:checked').value;
+            speakName(textToSpeak, country);
+        }
+    });
+
     // --- FUNCTIONS ---
 
     const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -100,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resultCard.classList.add('hidden');
         copyBtn.classList.remove('visible');
         copyBtn.classList.add('hidden');
+        voiceBtn.classList.remove('visible');
+        voiceBtn.classList.add('hidden');
 
         // Use a tiny timeout to allow the DOM to update
         setTimeout(() => {
@@ -111,7 +123,27 @@ document.addEventListener('DOMContentLoaded', () => {
             resultCard.classList.add('visible');
             copyBtn.classList.remove('hidden');
             copyBtn.classList.add('visible');
+            voiceBtn.classList.remove('hidden');
+            voiceBtn.classList.add('visible');
         }, 100);
+    }
+
+    function speakName(text, country) {
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        const langMap = {
+            russia: 'ru-RU',
+            china: 'zh-CN',
+            japan: 'ja-JP',
+            korea: 'ko-KR'
+        };
+
+        if (langMap[country]) {
+            utterance.lang = langMap[country];
+        }
+
+        speechSynthesis.speak(utterance);
     }
 
     function showCopyNotification() {
