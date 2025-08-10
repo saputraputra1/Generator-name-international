@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- DOM ELEMENTS ---
+    const nameInput = document.getElementById('name-input');
     const genderSelector = document.querySelector('.gender-selector');
     const genderOptions = document.querySelectorAll('.gender-option');
     const countrySelector = document.querySelector('.country-selector');
     const countryOptions = document.querySelectorAll('.country-option');
     const generateBtn = document.getElementById('generate-btn');
     const resultCard = document.getElementById('result-card');
+    const resultTitleEl = document.getElementById('result-title');
     const latinNameEl = document.getElementById('latin-name');
     const nativeScriptEl = document.getElementById('native-script');
     const copyBtn = document.getElementById('copy-btn');
@@ -36,17 +38,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Generate button click
     generateBtn.addEventListener('click', () => {
+        const userName = nameInput.value.trim();
+        const countryInput = document.querySelector('input[name="country"]:checked');
+
+        // Basic validation
+        if (!userName) {
+            nameInput.classList.add('error');
+            return;
+        }
+
         const gender = document.querySelector('input[name="gender"]:checked').value;
-        const country = document.querySelector('input[name="country"]:checked').value;
+        const country = countryInput.value;
+        const countryName = countryInput.parentElement.querySelector('span').textContent.trim().split(' ')[1];
 
         const { latinName, nativeName } = generateInternationalName(gender, country);
 
-        displayResult(latinName, nativeName);
+        displayResult(userName, countryName, latinName, nativeName);
+    });
+
+    // Remove error state on input
+    nameInput.addEventListener('input', () => {
+        if (nameInput.classList.contains('error')) {
+            nameInput.classList.remove('error');
+        }
     });
 
     // Copy button click
     copyBtn.addEventListener('click', () => {
-        const fullText = `${latinNameEl.textContent}\n${nativeScriptEl.textContent}`;
+        const fullText = `${resultTitleEl.textContent}\n${latinNameEl.textContent}\n${nativeScriptEl.textContent}`;
         navigator.clipboard.writeText(fullText).then(() => {
             showCopyNotification();
         });
@@ -75,22 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return { latinName, nativeName };
     }
 
-    function displayResult(latinName, nativeName) {
+    function displayResult(userName, countryName, latinName, nativeName) {
         // Hide previous result to reset animation
         resultCard.classList.remove('visible');
         resultCard.classList.add('hidden');
         copyBtn.classList.remove('visible');
-        copyBtn.classList.add('hidden'); // Ensure copy button is hidden before animation
+        copyBtn.classList.add('hidden');
 
         // Use a tiny timeout to allow the DOM to update
         setTimeout(() => {
+            resultTitleEl.textContent = `${userName}, your ${countryName} name is:`;
             latinNameEl.textContent = latinName;
             nativeScriptEl.textContent = nativeName;
 
             resultCard.classList.remove('hidden');
             resultCard.classList.add('visible');
-
-            copyBtn.classList.remove('hidden'); // THE FIX IS HERE
+            copyBtn.classList.remove('hidden');
             copyBtn.classList.add('visible');
         }, 100);
     }

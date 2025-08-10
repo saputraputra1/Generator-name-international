@@ -22,9 +22,16 @@
 
     <main class="glass-container">
         <header>
-            <h1>International Name Generator</h1>
-            <p class="subtitle">Generate your name in Russian, Chinese, Japanese, and Korean versions.</p>
+            <h1>Find Your International Name</h1>
+            <p class="subtitle">Enter your name and select a country to generate a new name.</p>
         </header>
+
+        <section class="input-area">
+            <div class="input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off">
+            </div>
+        </section>
 
         <section class="selection-area">
             <!-- Step 1: Gender Selection -->
@@ -65,6 +72,7 @@
         </section>
 
         <section id="result-card" class="hidden">
+            <p id="result-title" class="result-title"></p>
             <p id="latin-name" class="latin-name"></p>
             <p id="native-script" class="native-script"></p>
             <button id="copy-btn" class="hidden">

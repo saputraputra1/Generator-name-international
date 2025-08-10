@@ -92,7 +92,68 @@ h1 {
     font-size: clamp(0.9rem, 3vw, 1.1rem);
     font-weight: 400;
     color: var(--c-white-t80);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem; /* Adjusted margin */
+}
+
+/* --- Name Input Area --- */
+.input-area {
+    margin-bottom: 1.5rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+#name-input {
+    width: 100%;
+    background: var(--c-white-t10);
+    border: 1px solid var(--c-white-t20);
+    border-radius: 10px;
+    padding: 14px 14px 14px 45px; /* Left padding for icon */
+    font-family: var(--font-family);
+    font-size: 1.1rem;
+    color: var(--c-white);
+    transition: var(--anim-fast);
+}
+
+#name-input::placeholder {
+    color: var(--c-white-t80);
+    opacity: 0.8;
+}
+
+#name-input:focus {
+    outline: none;
+    border-color: var(--c-white);
+    background: var(--c-white-t15);
+}
+
+.input-wrapper .fa-user {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-white-t80);
+    font-size: 1.1rem;
+}
+
+/* Input Error State */
+#name-input.error {
+    border-color: #e55c5c;
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+
+.result-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--c-white-t80);
+    margin-bottom: 0.75rem;
 }
 
 .latin-name {
