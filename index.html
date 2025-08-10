@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Name Generator</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background-animation"></div>
+
+    <main class="glass-container">
+        <div id="flag-backdrop"></div>
+        <header>
+            <h1>Find Your International Name</h1>
+            <p class="subtitle">Enter your name and select a country to generate a new name.</p>
+        </header>
+
+        <section class="input-area">
+            <div class="input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off">
+            </div>
+        </section>
+
+        <section class="selection-area">
+            <div class="options-container">
+                <div class="gender-selection">
+                    <h4>Pilih Jenis Kelamin</h4>
+                    <div class="gender-selector">
+                        <label class="gender-option male active">
+                            <input type="radio" name="gender" value="male" checked>
+                            <i class="fas fa-mars"></i> Laki-laki
+                        </label>
+                        <label class="gender-option female">
+                            <input type="radio" name="gender" value="female">
+                            <i class="fas fa-venus"></i> Perempuan
+                        </label>
+                    </div>
+                </div>
+
+                <div class="country-selection">
+                    <h4>Pilih Negara</h4>
+                    <div class="country-selector">
+                        <label class="country-option">
+                            <input type="radio" name="country" value="russia" checked>
+                            <span>🇷🇺 Russia</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="china">
+                            <span>🇨🇳 China</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="japan">
+                            <span>🇯🇵 Japan</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="korea">
+                            <span>🇰🇷 Korea</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="generate-btn">
+                <i class="fas fa-sync-alt"></i> Generate Name
+            </button>
+        </section>
+
+        <section id="result-card" class="hidden">
+            <p id="result-title" class="result-title"></p>
+            <p id="latin-name" class="latin-name"></p>
+            <p id="native-script" class="native-script"></p>
+            <button id="copy-btn" class="hidden">
+                <i class="far fa-copy"></i>
+            </button>
+            <button id="voice-btn" class="hidden">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <div id="copy-notification" class="hidden">Tersalin!</div>
+        </section>
+    </main>
+
+    <!-- External JavaScript -->
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
