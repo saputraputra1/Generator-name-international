@@ -1,0 +1,306 @@
+/* --- General Setup & Variables --- */
+:root {
+    --font-family: 'Poppins', sans-serif;
+    --c-male: #5c9ce5;
+    --c-female: #e55c9c;
+    --c-gold: #FFD700;
+    --c-white: #ffffff;
+    --c-white-t80: rgba(255, 255, 255, 0.8);
+    --c-white-t20: rgba(255, 255, 255, 0.2);
+    --c-white-t15: rgba(255, 255, 255, 0.15);
+    --c-white-t10: rgba(255, 255, 255, 0.1);
+
+    --anim-fast: 0.2s ease;
+    --anim-medium: 0.4s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--c-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevents scrollbars from the background animation */
+}
+
+/* --- Animated Background --- */
+.background-animation {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+    background: linear-gradient(
+        -45deg,
+        #ff7e5f, /* Pink/Coral */
+        #e55c9c, /* Pink */
+        #8e44ad, /* Purple */
+        #3498db, /* Blue */
+        #2ecc71  /* Tosca/Green */
+    );
+    background-size: 400% 400%;
+    animation: gradient-flow 18s ease infinite;
+}
+
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- Glassmorphism Container --- */
+.glass-container {
+    background: var(--c-white-t15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--c-white-t20);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: fade-slide-up 0.8s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+@keyframes fade-slide-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Typography --- */
+h1 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--c-white);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    font-weight: 400;
+    color: var(--c-white-t80);
+    margin-bottom: 2rem;
+}
+
+.latin-name {
+    font-size: clamp(1.4rem, 4vw, 1.6rem);
+    font-weight: 600;
+    color: var(--c-white);
+    min-height: 1.5em; /* Reserve space */
+}
+
+.native-script {
+    font-size: clamp(1.6rem, 5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--c-gold);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.7), 0 0 12px rgba(255, 215, 0, 0.5);
+    animation: pulse-glow 2.5s infinite ease-in-out;
+    min-height: 1.5em; /* Reserve space */
+}
+
+@keyframes pulse-glow {
+    0%, 100% { text-shadow: 0 0 8px rgba(255, 215, 0, 0.7), 0 0 12px rgba(255, 215, 0, 0.5); }
+    50% { text-shadow: 0 0 16px rgba(255, 215, 0, 1), 0 0 24px rgba(255, 215, 0, 0.7); }
+}
+
+/* --- Gender & Country Selectors --- */
+.gender-selector, .country-selector {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.gender-selector { grid-template-columns: 1fr 1fr; }
+.country-selector { grid-template-columns: repeat(2, 1fr); }
+
+.gender-option, .country-option {
+    background: var(--c-white-t10);
+    border: 1px solid var(--c-white-t20);
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.gender-option:hover, .country-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: var(--c-white-t20);
+}
+
+.gender-option input, .country-option input {
+    display: none; /* Hide the actual radio button */
+}
+
+/* --- Active State Styling --- */
+.gender-option.active.male { background-color: var(--c-male); }
+.gender-option.active.female { background-color: var(--c-female); }
+.country-option.active { background-color: var(--c-male); }
+
+/* --- Click Animation --- */
+.gender-option:active, .country-option:active, #generate-btn:active {
+    transform: scale(0.97);
+    transition-duration: 0.1s;
+}
+
+/* --- Generate Button --- */
+#generate-btn {
+    width: 100%;
+    padding: 14px;
+    font-family: var(--font-family);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--c-white);
+    background: var(--c-white-t20);
+    border: 1px solid var(--c-white-t20);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--anim-fast);
+    backdrop-filter: blur(5px);
+}
+
+#generate-btn:hover {
+    background: var(--c-white-t10);
+    box-shadow: 0 0 15px var(--c-white-t20);
+}
+#generate-btn .fa-sync-alt { margin-right: 0.5rem; }
+
+/* --- Result Card --- */
+#result-card {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--c-white-t10);
+    border-radius: 15px;
+    position: relative;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#result-card.hidden {
+    display: none;
+}
+
+#result-card.visible {
+    animation: result-appear 0.4s ease forwards;
+}
+
+@keyframes result-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Copy Button & Notification --- */
+#copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--c-white-t20);
+    border: none;
+    color: var(--c-white);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--anim-fast);
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+#copy-btn.visible {
+    animation: copy-btn-appear 0.3s 0.2s ease forwards;
+}
+
+@keyframes copy-btn-appear {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+#copy-btn:hover {
+    background: var(--c-white-t10);
+}
+
+#copy-notification {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #28a745;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+}
+
+#copy-notification.visible {
+    animation: notification-fade 1.5s ease-in-out;
+}
+
+@keyframes notification-fade {
+    0%, 100% { opacity: 0; top: -40px; }
+    20%, 80% { opacity: 1; top: -50px; }
+}
+
+
+/* --- Utility & Hidden Classes --- */
+.hidden {
+    display: none;
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 600px) {
+    .glass-container {
+        padding: 1.5rem;
+        width: 95%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .gender-selector, .country-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .country-selector {
+        grid-template-columns: 1fr; /* 1 column on mobile for countries */
+    }
+
+    #generate-btn {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .country-selector {
+        grid-template-columns: 1fr; /* 1 column on very small screens */
+    }
+}
