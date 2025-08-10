@@ -27,7 +27,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden; /* Prevents scrollbars from the background animation */
+    overflow-x: hidden; /* Prevents horizontal scrollbars, allows vertical */
 }
 
 /* --- Animated Background --- */
