@@ -363,6 +363,34 @@ h1 {
 }
 
 
+/* --- Flag Backdrop --- */
+#flag-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: -1; /* Behind other content */
+    border-radius: 20px; /* Match container */
+    filter: blur(3px) saturate(1.2);
+    transform: scale(1.05); /* Avoid hard edges from blur */
+}
+
+#flag-backdrop.visible {
+    opacity: 0.15; /* Subtle visibility */
+}
+
+/* Specific flag images */
+#flag-backdrop.russia-flag { background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg'); }
+#flag-backdrop.china-flag  { background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg'); }
+#flag-backdrop.japan-flag  { background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg'); }
+#flag-backdrop.korea-flag  { background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg'); }
+
+
 /* --- Utility & Hidden Classes --- */
 .hidden {
     display: none;

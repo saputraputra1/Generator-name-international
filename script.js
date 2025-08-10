@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copy-btn');
     const voiceBtn = document.getElementById('voice-btn');
     const copyNotification = document.getElementById('copy-notification');
+    const flagBackdrop = document.getElementById('flag-backdrop');
 
     // --- EVENT LISTENERS ---
 
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     countrySelector.addEventListener('click', (e) => {
         const selectedOption = e.target.closest('.country-option');
         if (!selectedOption) return;
+
+        const countryValue = selectedOption.querySelector('input').value;
+        updateFlagBackdrop(countryValue);
 
         countryOptions.forEach(opt => opt.classList.remove('active'));
         selectedOption.classList.add('active');
@@ -153,8 +157,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     }
 
+    function updateFlagBackdrop(country) {
+        // Remove all potential flag classes
+        flagBackdrop.classList.remove('russia-flag', 'china-flag', 'japan-flag', 'korea-flag');
+
+        // Add the new class
+        flagBackdrop.classList.add(`${country}-flag`);
+
+        // Make it visible if it's not already
+        if (!flagBackdrop.classList.contains('visible')) {
+            flagBackdrop.classList.add('visible');
+        }
+    }
+
     // --- INITIAL STATE ---
     // Set default active states on load
     document.querySelector('.gender-option input[checked]').parentElement.classList.add('active');
-    document.querySelector('.country-option input[checked]').parentElement.classList.add('active');
+    const initialCountryOption = document.querySelector('.country-option input[checked]');
+    initialCountryOption.parentElement.classList.add('active');
+
+    // Set initial flag
+    updateFlagBackdrop(initialCountryOption.value);
 });
