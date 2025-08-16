@@ -69,6 +69,14 @@
                             <input type="radio" name="country" value="korea">
                             <span>🇰🇷 Korea</span>
                         </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="spain">
+                            <span>🇪🇸 Spanyol</span>
+                        </label>
+                        <label class="country-option">
+                            <input type="radio" name="country" value="brazil">
+                            <span>🇧🇷 Brazil</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -80,8 +88,25 @@
 
         <section id="result-card" class="hidden">
             <p id="result-title" class="result-title"></p>
-            <p id="latin-name" class="latin-name"></p>
-            <p id="native-script" class="native-script"></p>
+
+            <div class="full-name-display">
+                <p id="latin-name" class="latin-name"></p>
+                <p id="native-script" class="native-script"></p>
+            </div>
+
+            <div id="name-details" class="name-details hidden">
+                <div class="name-part" id="first-name-details">
+                    <h5 class="part-title">Nama Depan: <span class="name-text" id="first-name-text"></span></h5>
+                    <p class="part-meaning"><strong>Arti:</strong> <span id="first-name-meaning"></span></p>
+                    <p class="part-history"><strong>Sejarah:</strong> <span id="first-name-history"></span></p>
+                </div>
+                <div class="name-part" id="last-name-details">
+                    <h5 class="part-title">Nama Belakang/Marga: <span class="name-text" id="last-name-text"></span></h5>
+                    <p class="part-meaning"><strong>Arti:</strong> <span id="last-name-meaning"></span></p>
+                    <p class="part-history"><strong>Sejarah:</strong> <span id="last-name-history"></span></p>
+                </div>
+            </div>
+
             <button id="copy-btn" class="hidden">
                 <i class="far fa-copy"></i>
             </button>

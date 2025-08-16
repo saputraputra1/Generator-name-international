@@ -16,37 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyNotification = document.getElementById('copy-notification');
     const flagBackdrop = document.getElementById('flag-backdrop');
 
+    // New result detail elements
+    const nameDetailsContainer = document.getElementById('name-details');
+    const firstNameText = document.getElementById('first-name-text');
+    const firstNameMeaning = document.getElementById('first-name-meaning');
+    const firstNameHistory = document.getElementById('first-name-history');
+    const lastNameText = document.getElementById('last-name-text');
+    const lastNameMeaning = document.getElementById('last-name-meaning');
+    const lastNameHistory = document.getElementById('last-name-history');
+
+
     // --- EVENT LISTENERS ---
 
-    // Gender selection logic
     genderSelector.addEventListener('click', (e) => {
         const selectedOption = e.target.closest('.gender-option');
         if (!selectedOption) return;
-
         genderOptions.forEach(opt => opt.classList.remove('active'));
         selectedOption.classList.add('active');
         selectedOption.querySelector('input').checked = true;
     });
 
-    // Country selection logic
     countrySelector.addEventListener('click', (e) => {
         const selectedOption = e.target.closest('.country-option');
         if (!selectedOption) return;
-
         const countryValue = selectedOption.querySelector('input').value;
         updateFlagBackdrop(countryValue);
-
         countryOptions.forEach(opt => opt.classList.remove('active'));
         selectedOption.classList.add('active');
         selectedOption.querySelector('input').checked = true;
     });
 
-    // Generate button click
     generateBtn.addEventListener('click', () => {
         const userName = nameInput.value.trim();
         const countryInput = document.querySelector('input[name="country"]:checked');
 
-        // Basic validation
         if (!userName) {
             nameInput.classList.add('error');
             return;
@@ -54,29 +57,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const gender = document.querySelector('input[name="gender"]:checked').value;
         const country = countryInput.value;
-        const countryName = countryInput.parentElement.querySelector('span').textContent.trim().split(' ')[1];
+        const countryName = countryInput.parentElement.querySelector('span').textContent.trim().replace(/^[^\s]+ /, '');
 
-        const { latinName, nativeName } = generateInternationalName(gender, country);
 
-        displayResult(userName, countryName, latinName, nativeName);
+        const { firstNameObj, lastNameObj } = generateInternationalName(gender, country);
+
+        displayResult(userName, countryName, firstNameObj, lastNameObj, country);
     });
 
-    // Remove error state on input
     nameInput.addEventListener('input', () => {
         if (nameInput.classList.contains('error')) {
             nameInput.classList.remove('error');
         }
     });
 
-    // Copy button click
     copyBtn.addEventListener('click', () => {
-        const fullText = `${resultTitleEl.textContent}\n${latinNameEl.textContent}\n${nativeScriptEl.textContent}`;
-        navigator.clipboard.writeText(fullText).then(() => {
+        const textToCopy = `
+Nama Internasional untuk: ${resultTitleEl.textContent.split(',')[0]}
+Negara: ${resultTitleEl.textContent.split('your ')[1].split(' name')[0]}
+
+Nama Lengkap: ${latinNameEl.textContent} (${nativeScriptEl.textContent})
+
+--- Detail ---
+Nama Depan: ${firstNameText.textContent}
+Arti: ${firstNameMeaning.textContent}
+Sejarah: ${firstNameHistory.textContent}
+
+Nama Belakang/Marga: ${lastNameText.textContent}
+Arti: ${lastNameMeaning.textContent}
+Sejarah: ${lastNameHistory.textContent}
+        `.trim();
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
             showCopyNotification();
         });
     });
 
-    // Voice button click
     voiceBtn.addEventListener('click', () => {
         const textToSpeak = latinNameEl.textContent;
         if (textToSpeak) {
@@ -90,63 +106,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
     function generateInternationalName(gender, country) {
-        const latinFirst = getRandomItem(nameDatabase[country][gender].first);
-        const latinLast = getRandomItem(nameDatabase[country][gender].last);
-        const nativeFirst = getRandomItem(nativeScriptDatabase[country][gender].first);
-        const nativeLast = getRandomItem(nativeScriptDatabase[country][gender].last);
-
-        let latinName, nativeName;
-
-        if (country === 'china' || country === 'japan' || country === 'korea') {
-            latinName = `${latinLast} ${latinFirst}`;
-            nativeName = `${nativeLast}${nativeFirst}`; // No space for these languages
-        } else { // Russia
-            latinName = `${latinFirst} ${latinLast}`;
-            nativeName = `${nativeFirst} ${nativeLast}`;
-        }
-
-        return { latinName, nativeName };
+        const firstNameObj = getRandomItem(nameDatabase[country][gender].first);
+        const lastNameObj = getRandomItem(nameDatabase[country][gender].last);
+        return { firstNameObj, lastNameObj };
     }
 
-    function displayResult(userName, countryName, latinName, nativeName) {
-        // Hide previous result to reset animation
+    function displayResult(userName, countryName, firstNameObj, lastNameObj, country) {
         resultCard.classList.remove('visible');
         resultCard.classList.add('hidden');
-        copyBtn.classList.remove('visible');
         copyBtn.classList.add('hidden');
-        voiceBtn.classList.remove('visible');
         voiceBtn.classList.add('hidden');
+        nameDetailsContainer.classList.add('hidden');
 
-        // Use a tiny timeout to allow the DOM to update
+        let latinName, nativeName;
+        if (country === 'china' || country === 'japan' || country === 'korea') {
+            latinName = `${lastNameObj.name} ${firstNameObj.name}`;
+            nativeName = `${lastNameObj.native}${firstNameObj.native}`;
+        } else {
+            latinName = `${firstNameObj.name} ${lastNameObj.name}`;
+            nativeName = `${firstNameObj.native} ${lastNameObj.native}`;
+        }
+
         setTimeout(() => {
             resultTitleEl.textContent = `${userName}, your ${countryName} name is:`;
             latinNameEl.textContent = latinName;
             nativeScriptEl.textContent = nativeName;
 
+            // Populate details
+            firstNameText.textContent = firstNameObj.name;
+            firstNameMeaning.textContent = firstNameObj.meaning;
+            firstNameHistory.textContent = firstNameObj.history;
+
+            lastNameText.textContent = lastNameObj.name;
+            lastNameMeaning.textContent = lastNameObj.meaning;
+            lastNameHistory.textContent = lastNameObj.history;
+
             resultCard.classList.remove('hidden');
             resultCard.classList.add('visible');
             copyBtn.classList.remove('hidden');
-            copyBtn.classList.add('visible');
             voiceBtn.classList.remove('hidden');
-            voiceBtn.classList.add('visible');
+            nameDetailsContainer.classList.remove('hidden');
         }, 100);
     }
 
     function speakName(text, country) {
         speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-
         const langMap = {
             russia: 'ru-RU',
             china: 'zh-CN',
             japan: 'ja-JP',
-            korea: 'ko-KR'
+            korea: 'ko-KR',
+            spain: 'es-ES',
+            brazil: 'pt-BR'
         };
-
         if (langMap[country]) {
             utterance.lang = langMap[country];
         }
-
         speechSynthesis.speak(utterance);
     }
 
@@ -158,24 +174,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateFlagBackdrop(country) {
-        // Remove all potential flag classes
-        flagBackdrop.classList.remove('russia-flag', 'china-flag', 'japan-flag', 'korea-flag');
+        const flags = ['russia', 'china', 'japan', 'korea', 'spain', 'brazil'];
+        flags.forEach(flag => flagBackdrop.classList.remove(`${flag}-flag`));
 
-        // Add the new class
         flagBackdrop.classList.add(`${country}-flag`);
-
-        // Make it visible if it's not already
         if (!flagBackdrop.classList.contains('visible')) {
             flagBackdrop.classList.add('visible');
         }
     }
 
     // --- INITIAL STATE ---
-    // Set default active states on load
     document.querySelector('.gender-option input[checked]').parentElement.classList.add('active');
     const initialCountryOption = document.querySelector('.country-option input[checked]');
     initialCountryOption.parentElement.classList.add('active');
-
-    // Set initial flag
     updateFlagBackdrop(initialCountryOption.value);
 });
