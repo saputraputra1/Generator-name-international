@@ -173,7 +173,9 @@ Sejarah: ${lastNameHistory.textContent}
             spain: 'es-ES',
             brazil: 'pt-BR',
             netherlands: 'nl-NL',
-            vietnam: 'vi-VN'
+            vietnam: 'vi-VN',
+            italy: 'it-IT',
+            india: 'hi-IN'
         };
 
         const targetLang = langMap[country];
@@ -195,7 +197,7 @@ Sejarah: ${lastNameHistory.textContent}
     }
 
     function updateFlagBackdrop(country) {
-        const flags = ['russia', 'china', 'japan', 'korea', 'spain', 'brazil', 'netherlands', 'vietnam'];
+        const flags = ['russia', 'china', 'japan', 'korea', 'spain', 'brazil', 'netherlands', 'vietnam', 'italy', 'india'];
         flags.forEach(flag => flagBackdrop.classList.remove(`${flag}-flag`));
 
         flagBackdrop.classList.add(`${country}-flag`);
