@@ -133,6 +133,11 @@ h1 {
 }
 
 /* --- Selection Area --- */
+.selection-area {
+    position: relative;
+    z-index: 2;
+}
+
 .selection-area h4 {
     font-size: 1rem;
     font-weight: 600;
