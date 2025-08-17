@@ -26,6 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastNameHistory = document.getElementById('last-name-history');
 
 
+    // --- VOICE SYNTHESIS SETUP ---
+    let speechVoices = [];
+
+    function loadVoices() {
+        speechVoices = speechSynthesis.getVoices();
+    }
+
+    loadVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+
     // --- EVENT LISTENERS ---
 
     genderSelector.addEventListener('click', (e) => {
@@ -162,8 +175,14 @@ Sejarah: ${lastNameHistory.textContent}
             netherlands: 'nl-NL',
             vietnam: 'vi-VN'
         };
-        if (langMap[country]) {
-            utterance.lang = langMap[country];
+
+        const targetLang = langMap[country];
+        if (targetLang) {
+            utterance.lang = targetLang;
+            const voice = speechVoices.find(v => v.lang === targetLang);
+            if (voice) {
+                utterance.voice = voice;
+            }
         }
         speechSynthesis.speak(utterance);
     }
