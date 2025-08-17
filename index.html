@@ -121,9 +121,103 @@
             <button id="voice-btn" class="hidden" title="Dengarkan Nama">
                 <i class="fas fa-volume-high"></i>
             </button>
+            <button id="ktp-btn" class="hidden" title="Buat KTP">
+                <i class="far fa-id-card"></i>
+            </button>
             <div id="copy-notification" class="hidden">Tersalin!</div>
         </section>
     </main>
+
+    <!-- KTP Modal -->
+    <div id="ktp-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <div id="ktp-card">
+                <div class="ktp-header">
+                    <div class="ktp-header-text">
+                        <span>PROVINSI</span>
+                        <span id="ktp-provinsi">DKI JAKARTA</span>
+                    </div>
+                    <div class="ktp-header-text">
+                        <span>KOTA</span>
+                        <span id="ktp-kota">JAKARTA PUSAT</span>
+                    </div>
+                </div>
+                <div class="ktp-body">
+                    <div class="ktp-title">
+                        <strong>KARTU TANDA PENDUDUK</strong>
+                    </div>
+                    <div class="ktp-content">
+                        <div class="ktp-photo">
+                            <img id="ktp-photo-img" src="https://i.imgur.com/8f2Kq5A.png" alt="Foto">
+                        </div>
+                        <div class="ktp-details">
+                            <div class="ktp-field">
+                                <span class="label">NIK</span>
+                                <span class="value" id="ktp-nik">: 1234567890123456</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Nama</span>
+                                <span class="value" id="ktp-nama">: NAMA LENGKAP</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Tempat/Tgl Lahir</span>
+                                <span class="value" id="ktp-ttl">: TEMPAT, DD-MM-YYYY</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Jenis Kelamin</span>
+                                <span class="value" id="ktp-gender">: JENIS KELAMIN</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Alamat</span>
+                                <span class="value" id="ktp-alamat">: JL. JEND. SUDIRMAN KAV. 52-53</span>
+                            </div>
+                            <div class="ktp-field-indent">
+                                <span class="label">RT/RW</span>
+                                <span class="value" id="ktp-rtrw">: 001/001</span>
+                            </div>
+                            <div class="ktp-field-indent">
+                                <span class="label">Kel/Desa</span>
+                                <span class="value" id="ktp-kel-desa">: SENAYAN</span>
+                            </div>
+                            <div class="ktp-field-indent">
+                                <span class="label">Kecamatan</span>
+                                <span class="value" id="ktp-kecamatan">: KEBAYORAN BARU</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Agama</span>
+                                <span class="value" id="ktp-agama">: -</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Status Perkawinan</span>
+                                <span class="value" id="ktp-status">: BELUM KAWIN</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Pekerjaan</span>
+                                <span class="value" id="ktp-pekerjaan">: PELAJAR/MAHASISWA</span>
+                            </div>
+                            <div class="ktp-field">
+                                <span class="label">Kewarganegaraan</span>
+                                <span class="value" id="ktp-kewarganegaraan">: WNA</span>
+                            </div>
+                             <div class="ktp-field">
+                                <span class="label">Berlaku Hingga</span>
+                                <span class="value" id="ktp-berlaku">: SEUMUR HIDUP</span>
+                            </div>
+                        </div>
+                        <div class="ktp-signature">
+                            <span id="ktp-kota-ttd">KOTA, DD-MM-YYYY</span>
+                            <img src="https://i.imgur.com/J3y6E8b.png" alt="Tanda Tangan" class="ktp-ttd-img">
+                            <span id="ktp-nama-ttd">(NAMA LENGKAP)</span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="ktp-chip">
+                    <img src="https://i.imgur.com/O1x5tV1.png" alt="Chip KTP">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- External JavaScript -->
     <script src="database.js"></script>

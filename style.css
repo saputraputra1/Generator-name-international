@@ -381,3 +381,186 @@ h1 {
         grid-template-columns: 1fr; /* 1 column on very small screens */
     }
 }
+
+/* --- KTP Modal & Card Styling --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+.modal-overlay:not(.hidden) {
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--c-white-t10);
+    animation: fade-slide-up 0.5s ease forwards;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: white;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#ktp-card {
+    width: 540px;
+    height: 340px;
+    background: linear-gradient(135deg, #e0f2f1, #b2dfdb); /* Light teal gradient */
+    border-radius: 12px;
+    padding: 15px;
+    font-family: 'Helvetica', sans-serif;
+    color: #1f2937; /* Dark gray text */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+#ktp-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url('https://www.transparenttextures.com/patterns/subtle-grunge.png');
+    opacity: 0.05;
+    transform: rotate(20deg);
+}
+
+
+.ktp-header {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+.ktp-header-text {
+    display: flex;
+    flex-direction: column;
+}
+.ktp-header-text span:first-child {
+    font-size: 10px;
+    font-weight: bold;
+}
+.ktp-header-text span:last-child {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ktp-body { padding-top: 10px; }
+
+.ktp-title {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.ktp-content { display: flex; gap: 15px; }
+
+.ktp-photo {
+    width: 100px;
+    height: 130px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#ktp-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ktp-details { flex: 1; font-size: 12px; line-height: 1.5; }
+
+.ktp-field, .ktp-field-indent {
+    display: flex;
+}
+.ktp-field .label, .ktp-field-indent .label {
+    width: 110px;
+    flex-shrink: 0;
+}
+.ktp-field-indent { margin-left: 15px; }
+.ktp-field-indent .label { width: 95px; }
+
+.ktp-field .value, .ktp-field-indent .value {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ktp-signature {
+    width: 120px;
+    text-align: center;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+}
+.ktp-ttd-img {
+    width: 100px;
+    height: 40px;
+    object-fit: contain;
+    margin: 5px 0;
+}
+
+.ktp-chip {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.ktp-chip img {
+    width: 45px;
+    height: 35px;
+    opacity: 0.8;
+}
+
+#ktp-btn {
+    position: absolute;
+    top: 10px;
+    right: 110px; /* Positioned next to other buttons */
+    background: var(--c-white-t20);
+    border: none;
+    color: var(--c-white);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--anim-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#ktp-btn:hover {
+    background: var(--c-white-t10);
+}

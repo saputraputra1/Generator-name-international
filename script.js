@@ -13,8 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const nativeScriptEl = document.getElementById('native-script');
     const copyBtn = document.getElementById('copy-btn');
     const voiceBtn = document.getElementById('voice-btn');
+    const ktpBtn = document.getElementById('ktp-btn');
     const copyNotification = document.getElementById('copy-notification');
     const flagBackdrop = document.getElementById('flag-backdrop');
+
+    // KTP Modal Elements
+    const ktpModal = document.getElementById('ktp-modal');
+    const modalCloseBtn = document.querySelector('.modal-close-btn');
 
     // New result detail elements
     const nameDetailsContainer = document.getElementById('name-details');
@@ -101,6 +106,25 @@ Sejarah: ${lastNameHistory.textContent}
         }
     });
 
+    ktpBtn.addEventListener('click', () => {
+        const country = document.querySelector('input[name="country"]:checked').value;
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const fullName = latinNameEl.textContent;
+
+        const ktpData = generateKtpData(fullName, gender, country);
+        displayKtp(ktpData);
+    });
+
+    modalCloseBtn.addEventListener('click', () => {
+        ktpModal.classList.add('hidden');
+    });
+
+    ktpModal.addEventListener('click', (e) => {
+        if (e.target === ktpModal) {
+            ktpModal.classList.add('hidden');
+        }
+    });
+
     // --- FUNCTIONS ---
 
     const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -116,6 +140,7 @@ Sejarah: ${lastNameHistory.textContent}
         resultCard.classList.add('hidden');
         copyBtn.classList.add('hidden');
         voiceBtn.classList.add('hidden');
+        ktpBtn.classList.add('hidden');
         nameDetailsContainer.classList.add('hidden');
 
         let latinName, nativeName;
@@ -145,6 +170,7 @@ Sejarah: ${lastNameHistory.textContent}
             resultCard.classList.add('visible');
             copyBtn.classList.remove('hidden');
             voiceBtn.classList.remove('hidden');
+            ktpBtn.classList.remove('hidden');
             nameDetailsContainer.classList.remove('hidden');
         }, 100);
     }
@@ -173,6 +199,55 @@ Sejarah: ${lastNameHistory.textContent}
         setTimeout(() => {
             copyNotification.classList.remove('visible');
         }, 1500);
+    }
+
+    function generateKtpData(fullName, gender, country) {
+        const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const pad = (num) => num.toString().padStart(2, '0');
+
+        // Generate Random DOB
+        const day = randomInt(1, 28);
+        const month = randomInt(1, 12);
+        const year = randomInt(1970, 2004);
+        const dob = `${pad(day)}-${pad(month)}-${year}`;
+
+        // Generate NIK from DOB and random numbers
+        const nikDay = gender === 'female' ? day + 40 : day;
+        const nik = `${randomInt(31,36)}${randomInt(1,70)}${pad(nikDay)}${pad(month)}${year.toString().slice(2)}${randomInt(1000,9999)}`;
+
+        const countryCapitals = {
+            russia: "MOSCOW",
+            china: "BEIJING",
+            japan: "TOKYO",
+            korea: "SEOUL",
+            spain: "MADRID",
+            brazil: "BRASILIA",
+            netherlands: "AMSTERDAM",
+            vietnam: "HANOI"
+        };
+
+        return {
+            nik: `: ${nik}`,
+            nama: `: ${fullName.toUpperCase()}`,
+            ttl: `: ${countryCapitals[country] || 'IBU KOTA'}, ${dob}`,
+            gender: `: ${gender === 'male' ? 'LAKI-LAKI' : 'PEREMPUAN'}`,
+            kewarganegaraan: ': WNA',
+            kota: countryCapitals[country] || 'IBU KOTA',
+            tanggal_terbit: `${pad(day)}/${pad(month)}/${year + 20}`
+        };
+    }
+
+    function displayKtp(data) {
+        document.getElementById('ktp-nik').textContent = data.nik;
+        document.getElementById('ktp-nama').textContent = data.nama;
+        document.getElementById('ktp-ttl').textContent = data.ttl;
+        document.getElementById('ktp-gender').textContent = data.gender;
+        document.getElementById('ktp-kewarganegaraan').textContent = data.kewarganegaraan;
+        document.getElementById('ktp-kota').textContent = data.kota;
+        document.getElementById('ktp-kota-ttd').textContent = `${data.kota}, ${data.tanggal_terbit}`;
+        document.getElementById('ktp-nama-ttd').textContent = `(${data.nama.replace(': ', '')})`;
+
+        ktpModal.classList.remove('hidden');
     }
 
     function updateFlagBackdrop(country) {
